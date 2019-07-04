@@ -19,9 +19,10 @@ from oidc_provider.lib.utils.token import (
 from oidc_provider.models import (
     Client,
     Code,
-    Token,
 )
 from oidc_provider import settings
+
+Token = settings.get('OIDC_TOKEN_MODEL', import_str=True)
 
 logger = logging.getLogger(__name__)
 

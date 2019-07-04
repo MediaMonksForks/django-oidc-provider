@@ -168,6 +168,12 @@ class DefaultSettings(object):
             'error': 'oidc_provider/error.html'
         }
 
+    @property
+    def OIDC_TOKEN_MODEL(self):
+        """
+        OPTIONAL: Extend Token model to have custom logic
+        """
+        return 'oidc_provider.models.Token'
 
 default_settings = DefaultSettings()
 

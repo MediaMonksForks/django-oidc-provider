@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 import base64
 import binascii
+import uuid
 from hashlib import md5, sha256
 import json
 
@@ -201,7 +202,7 @@ class Code(BaseCodeTokenModel):
         return u'{0} - {1}'.format(self.client, self.code)
 
 
-class Token(BaseCodeTokenModel):
+class BaseToken(BaseCodeTokenModel):
 
     user = models.ForeignKey(
         settings.AUTH_USER_MODEL, null=True, verbose_name=_(u'User'), on_delete=models.CASCADE)
@@ -210,8 +211,7 @@ class Token(BaseCodeTokenModel):
     _id_token = models.TextField(verbose_name=_(u'ID Token'))
 
     class Meta:
-        verbose_name = _(u'Token')
-        verbose_name_plural = _(u'Tokens')
+        abstract = True
 
     @property
     def id_token(self):
@@ -235,6 +235,36 @@ class Token(BaseCodeTokenModel):
                 hashed_access_token[:len(hashed_access_token) // 2]
             )
         ).rstrip(b'=').decode('ascii')
+
+    def generate_access_token(self, payload=None):
+        """
+        :return: creates and retrns a new access token string
+        """
+        return uuid.uuid4().hex
+
+
+class JWTToken(BaseToken):
+    access_token = models.TextField(max_length=65000, verbose_name=_(u'Access Token'))
+    access_token_hash = models.CharField(max_length=255, unique=True, verbose_name=_(u'Access Token Hash'))
+
+    class Meta:
+        verbose_name = _(u'Token')
+        verbose_name_plural = _(u'Tokens')
+
+    def generate_access_token(self, payload=None):
+        return uuid.uuid4().hex
+
+    def save(self, *args, **kw):
+        self.access_token_hash = sha256(
+            self.access_token.encode('ascii')
+        ).hexdigest().encode('ascii')
+        super().save(*args, **kw)
+
+class Token(BaseToken):
+
+    class Meta:
+        verbose_name = _(u'Token')
+        verbose_name_plural = _(u'Tokens')
 
 
 class UserConsent(BaseCodeTokenModel):

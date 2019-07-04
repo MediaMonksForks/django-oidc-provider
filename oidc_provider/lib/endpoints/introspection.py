@@ -5,10 +5,12 @@ from django.http import JsonResponse
 from oidc_provider.lib.errors import TokenIntrospectionError
 from oidc_provider.lib.utils.common import run_processing_hook
 from oidc_provider.lib.utils.oauth2 import extract_client_auth
-from oidc_provider.models import Token, Client
+from oidc_provider.models import Client
 from oidc_provider import settings
 
 logger = logging.getLogger(__name__)
+
+Token = settings.get('OIDC_TOKEN_MODEL', import_str=True)
 
 INTROSPECTION_SCOPE = 'token_introspection'
 

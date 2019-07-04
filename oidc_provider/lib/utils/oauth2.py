@@ -4,12 +4,12 @@ import re
 
 from django.http import HttpResponse
 
+from oidc_provider import settings
 from oidc_provider.lib.errors import BearerTokenError
-from oidc_provider.models import Token
-
 
 logger = logging.getLogger(__name__)
 
+Token = settings.get('OIDC_TOKEN_MODEL', import_str=True)
 
 def extract_access_token(request):
     """
@@ -65,7 +65,6 @@ def protected_resource_view(scopes=None):
     def wrapper(view):
         def view_wrapper(request,  *args, **kwargs):
             access_token = extract_access_token(request)
-
             try:
                 try:
                     kwargs['token'] = Token.objects.get(access_token=access_token)
