@@ -19,6 +19,7 @@ from oidc_provider import settings
 
 Token = settings.get('OIDC_TOKEN_MODEL', import_str=True)
 
+
 def create_id_token(token, user, aud, nonce='', at_hash='', request=None, scope=None):
     """
     Creates the id_token dictionary.
@@ -110,7 +111,7 @@ def create_token(user, client, scope, id_token_dic=None):
     token = Token()
     token.user = user
     token.client = client
-    token.access_token = token.generate_access_token()
+
 
     if id_token_dic is not None:
         token.id_token = id_token_dic
@@ -120,6 +121,7 @@ def create_token(user, client, scope, id_token_dic=None):
         seconds=settings.get('OIDC_TOKEN_EXPIRE'))
     token.scope = scope
 
+    token.access_token = token.generate_access_token()
     return token
 
 

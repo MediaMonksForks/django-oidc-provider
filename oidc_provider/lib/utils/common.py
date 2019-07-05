@@ -131,6 +131,20 @@ def default_idtoken_processing_hook(
     return id_token
 
 
+def default_accesstoken_processing_hook(token):
+    """
+    Hook to perform some additional actions to `access_token` dictionary just before serialization.
+    Useful if you are creating a JWT type access token.
+
+    :param token: Token instance contains values that going to be serialized into `access_token`
+    :type id_token: dict
+
+    :return: custom modified dictionary of values for `id_token`
+    :rtype: dict
+    """
+    return {}
+
+
 def default_introspection_processing_hook(introspection_response, client, id_token):
     """
     Hook to customise the returned data from the token introspection endpoint

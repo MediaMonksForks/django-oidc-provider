@@ -237,7 +237,7 @@ class BaseToken(BaseCodeTokenModel):
             )
         ).rstrip(b'=').decode('ascii')
 
-    def generate_access_token(self, payload=None):
+    def generate_access_token(self):
         """
         :return: creates and retrns a new access token string
         """
@@ -252,16 +252,19 @@ class JWTToken(BaseToken):
         verbose_name = _(u'Token')
         verbose_name_plural = _(u'Tokens')
 
-    def generate_access_token(self, payload=None):
+    def generate_access_token(self):
         from oidc_provider.lib.utils.token import encode_id_token
-        # TODO: check
-        return encode_id_token({
-            'jti': uuid.uuid4().hex,
-            'sub': str(self.user.uuid),
-            'iat': str(time.time())
-        }, self.client)
+        from oidc_provider.lib.utils.common import run_processing_hook
 
-        # return uuid.uuid4().hex
+        claims = {
+            'jti': uuid.uuid4().hex,
+            'iat': str(time.time())
+        }
+
+        custom_claims = run_processing_hook(self, 'OIDC_ACCESSTOKEN_PROCESSING_HOOK')
+        claims.update(custom_claims)
+
+        return encode_id_token(claims, self.client)
 
     def save(self, *args, **kw):
         self.access_token_hash = sha256(

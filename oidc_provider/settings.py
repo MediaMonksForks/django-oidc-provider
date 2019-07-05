@@ -130,6 +130,10 @@ class DefaultSettings(object):
         return 'oidc_provider.lib.utils.common.default_idtoken_processing_hook'
 
     @property
+    def OIDC_ACCESSTOKEN_PROCESSING_HOOK(self):
+        return 'oidc_provider.lib.utils.common.default_accesstoken_processing_hook'
+
+    @property
     def OIDC_INTROSPECTION_PROCESSING_HOOK(self):
         """
         OPTIONAL. A string with the location of your function.
