@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 import base64
 import binascii
+import time
 import uuid
 from hashlib import md5, sha256
 import json
@@ -252,7 +253,15 @@ class JWTToken(BaseToken):
         verbose_name_plural = _(u'Tokens')
 
     def generate_access_token(self, payload=None):
-        return uuid.uuid4().hex
+        from oidc_provider.lib.utils.token import encode_id_token
+        # TODO: check
+        return encode_id_token({
+            'jti': uuid.uuid4().hex,
+            'sub': str(self.user.uuid),
+            'iat': str(time.time())
+        }, self.client)
+
+        # return uuid.uuid4().hex
 
     def save(self, *args, **kw):
         self.access_token_hash = sha256(
