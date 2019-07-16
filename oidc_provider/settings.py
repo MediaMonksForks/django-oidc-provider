@@ -133,6 +133,11 @@ class DefaultSettings(object):
     def OIDC_ACCESSTOKEN_PROCESSING_HOOK(self):
         return 'oidc_provider.lib.utils.common.default_accesstoken_processing_hook'
 
+
+    @property
+    def OIDC_TOKEN_CREATED_HOOK(self):
+        return 'oidc_provider.lib.utils.common.default_token_created_hook'
+
     @property
     def OIDC_INTROSPECTION_PROCESSING_HOOK(self):
         """

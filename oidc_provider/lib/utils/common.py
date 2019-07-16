@@ -145,6 +145,20 @@ def default_accesstoken_processing_hook(token):
     return {}
 
 
+def default_token_created_hook(token, request):
+    """
+    hook to perform some additional actions after an access token been created.
+
+    it passes the token and the request, so in case one wants to log why/when
+    access token is created, one can simply hook this function
+
+    :param token:
+    :param request:
+    :return:
+    """
+    pass
+
+
 def default_introspection_processing_hook(introspection_response, client, id_token):
     """
     Hook to customise the returned data from the token introspection endpoint

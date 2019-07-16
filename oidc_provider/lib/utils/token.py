@@ -103,7 +103,7 @@ def client_id_from_id_token(id_token):
     return aud
 
 
-def create_token(user, client, scope, id_token_dic=None):
+def create_token(user, client, scope, id_token_dic=None, request=None):
     """
     Create and populate a Token object.
     Return a Token object.
@@ -122,6 +122,9 @@ def create_token(user, client, scope, id_token_dic=None):
     token.scope = scope
 
     token.access_token = token.generate_access_token()
+
+    settings.get('OIDC_TOKEN_CREATED_HOOK', import_str=True)(token=token, request=request)
+
     return token
 
 

@@ -152,7 +152,8 @@ class TokenEndpoint(object):
         token = create_token(
             user=self.code.user,
             client=self.code.client,
-            scope=self.code.scope)
+            scope=self.code.scope,
+            request=self.request)
 
         if self.code.is_authentication:
             id_token_dic = create_id_token(
@@ -235,7 +236,9 @@ class TokenEndpoint(object):
         token = create_token(
             self.user,
             self.client,
-            self.params['scope'].split(' '))
+            self.params['scope'].split(' '),
+            request=self.request
+        )
 
         id_token_dic = create_id_token(
             token=token,
