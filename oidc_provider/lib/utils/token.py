@@ -108,10 +108,10 @@ def create_token(user, client, scope, id_token_dic=None, request=None):
     Create and populate a Token object.
     Return a Token object.
     """
+    assert request
     token = Token()
     token.user = user
     token.client = client
-
 
     if id_token_dic is not None:
         token.id_token = id_token_dic

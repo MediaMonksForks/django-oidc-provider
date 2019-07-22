@@ -130,7 +130,7 @@ class AuthorizeEndpoint(object):
         uri = urlsplit(self.params['redirect_uri'])
         query_params = parse_qs(uri.query)
         query_fragment = {}
-
+        # import ipdb; ipdb.set_trace()
         try:
             if self.grant_type in ['authorization_code', 'hybrid']:
                 code = create_code(

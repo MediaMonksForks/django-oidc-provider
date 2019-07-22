@@ -53,6 +53,7 @@ class TokenEndpoint(object):
         self.params['password'] = self.request.POST.get('password', '')
 
     def validate_params(self):
+        print("----- self.params ----", self.params)
         try:
             self.client = Client.objects.get(client_id=self.params['client_id'])
         except Client.DoesNotExist:
@@ -197,7 +198,8 @@ class TokenEndpoint(object):
         token = create_token(
             user=self.token.user,
             client=self.token.client,
-            scope=scope)
+            scope=scope,
+            request=self.request)
 
         # If the Token has an id_token it's an Authentication request.
         if self.token.id_token:

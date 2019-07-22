@@ -191,8 +191,10 @@ class AuthorizeView(View):
             authorize.set_client_user_consent()
 
             uri = authorize.create_response_uri()
-
-            return redirect(uri)
+            print("uri -", uri)
+            from django.shortcuts import redirect as dj_redirect
+            return dj_redirect(uri)
+            # return redirect(uri)
 
         except AuthorizeError as error:
             uri = error.create_uri(
