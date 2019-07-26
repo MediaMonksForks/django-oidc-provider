@@ -245,6 +245,7 @@ class BaseToken(BaseCodeTokenModel):
 
 
 class JWTToken(BaseToken):
+    jti = models.UUIDField(default=uuid.uuid4, db_index=True)
     access_token = models.TextField(max_length=65000, verbose_name=_(u'Access Token'))
     access_token_hash = models.CharField(max_length=255, unique=True, verbose_name=_(u'Access Token Hash'))
 
@@ -255,10 +256,17 @@ class JWTToken(BaseToken):
     def generate_access_token(self):
         from oidc_provider.lib.utils.token import encode_id_token
         from oidc_provider.lib.utils.common import run_processing_hook
+        from django.utils.dateformat import format
 
         claims = {
-            'jti': uuid.uuid4().hex,
-            'iat': str(time.time())
+            # issueer
+            # 'iss':
+            # JWT ID
+            'jti': self.jti.hex,
+            # issued at
+            'iat': int(time.time()),
+            # expiration
+            'exp': format(self.expires_at, 'U')
         }
 
         custom_claims = run_processing_hook(self, 'OIDC_ACCESSTOKEN_PROCESSING_HOOK')
