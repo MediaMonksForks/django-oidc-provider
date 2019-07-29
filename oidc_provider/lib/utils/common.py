@@ -196,19 +196,20 @@ def cors_allow_any(request, response):
     Add headers to permit CORS requests from any origin, with or without credentials,
     with any headers.
     """
-    origin = request.META.get('HTTP_ORIGIN')
-    if not origin:
-        return response
-
-    # From the CORS spec: The string "*" cannot be used for a resource that supports credentials.
-    response['Access-Control-Allow-Origin'] = origin
-    patch_vary_headers(response, ['Origin'])
-    response['Access-Control-Allow-Credentials'] = 'true'
-
-    if request.method == 'OPTIONS':
-        if 'HTTP_ACCESS_CONTROL_REQUEST_HEADERS' in request.META:
-            response['Access-Control-Allow-Headers'] \
-                = request.META['HTTP_ACCESS_CONTROL_REQUEST_HEADERS']
-        response['Access-Control-Allow-Methods'] = 'GET, POST, OPTIONS'
-
     return response
+    # origin = request.META.get('HTTP_ORIGIN')
+    # if not origin:
+    #     return response
+    #
+    # # From the CORS spec: The string "*" cannot be used for a resource that supports credentials.
+    # response['Access-Control-Allow-Origin'] = origin
+    # patch_vary_headers(response, ['Origin'])
+    # response['Access-Control-Allow-Credentials'] = 'true'
+    #
+    # if request.method == 'OPTIONS':
+    #     if 'HTTP_ACCESS_CONTROL_REQUEST_HEADERS' in request.META:
+    #         response['Access-Control-Allow-Headers'] \
+    #             = request.META['HTTP_ACCESS_CONTROL_REQUEST_HEADERS']
+    #     response['Access-Control-Allow-Methods'] = 'GET, POST, OPTIONS'
+    #
+    # return response
