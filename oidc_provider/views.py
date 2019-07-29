@@ -264,6 +264,7 @@ class ProviderInfoView(View):
         dic = dict()
 
         site_url = get_site_url(request=request)
+        dic['version'] = '0.0.1'
         dic['issuer'] = get_issuer(site_url=site_url, request=request)
 
         dic['authorization_endpoint'] = site_url + reverse('oidc_provider:authorize')
