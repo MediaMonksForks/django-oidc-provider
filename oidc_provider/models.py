@@ -266,7 +266,7 @@ class JWTToken(BaseToken):
             # issued at
             'iat': int(time.time()),
             # expiration
-            'exp': format(self.expires_at, 'U')
+            'exp': int(format(self.expires_at, 'U'))
         }
 
         custom_claims = run_processing_hook(self, 'OIDC_ACCESSTOKEN_PROCESSING_HOOK')
