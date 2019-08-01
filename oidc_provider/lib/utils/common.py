@@ -5,7 +5,7 @@ from django.http import HttpResponse
 from django.utils.cache import patch_vary_headers
 
 from oidc_provider import settings
-
+from django.shortcuts import redirect as djredirect
 
 if django.VERSION >= (1, 11):
     from django.urls import reverse
@@ -17,10 +17,7 @@ def redirect(uri):
     """
     Custom Response object for redirecting to a Non-HTTP url scheme.
     """
-    response = HttpResponse('', status=302)
-    response['Location'] = uri
-    return response
-
+    return djredirect(uri)
 
 def get_site_url(site_url=None, request=None):
     """
