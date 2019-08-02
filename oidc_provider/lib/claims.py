@@ -52,13 +52,10 @@ class ScopeClaims(object):
         Returns a dic.
         """
         dic = {}
-        print("scopes -> ->", self.scopes, self._scopes_registered())
         for scope in self.scopes:
             if scope in self._scopes_registered():
-                print("-> !! scope", scope)
                 dic.update(getattr(self, 'scope_' + scope)())
 
-        print("------- dic ----", dic)
         dic = self._clean_dic(dic)
 
         return dic

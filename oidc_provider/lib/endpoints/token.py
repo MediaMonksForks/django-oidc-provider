@@ -53,7 +53,6 @@ class TokenEndpoint(object):
         self.params['password'] = self.request.POST.get('password', '')
 
     def validate_params(self):
-        print("----- self.params ----", self.params)
         try:
             self.client = Client.objects.get(client_id=self.params['client_id'])
         except Client.DoesNotExist:
