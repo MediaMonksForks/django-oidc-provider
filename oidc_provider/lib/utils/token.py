@@ -121,9 +121,9 @@ def create_token(user, client, scope, id_token_dic=None, request=None):
         seconds=settings.get('OIDC_TOKEN_EXPIRE'))
     token.scope = scope
 
-    token.access_token = token.generate_access_token()
-
     settings.get('OIDC_TOKEN_CREATED_HOOK', import_str=True)(token=token, request=request)
+
+    token.access_token = token.generate_access_token()
 
     return token
 
