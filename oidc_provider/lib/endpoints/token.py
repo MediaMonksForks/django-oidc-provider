@@ -245,7 +245,7 @@ class TokenEndpoint(object):
             token=token,
             user=self.user,
             aud=self.client.client_id,
-            nonce='self.code.nonce',
+            # nonce='self.code.nonce',
             at_hash=token.at_hash,
             request=self.request,
             scope=token.scope,
