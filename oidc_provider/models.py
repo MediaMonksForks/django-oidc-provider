@@ -296,6 +296,8 @@ class JWTToken(BaseToken):
         max_length=255, unique=True, verbose_name=_(u"Access Token Hash")
     )
 
+    id_token_str = models.TextField(max_length=65000, verbose_name=_(u"ID Token Str"))
+    
     class Meta:
         verbose_name = _(u"JWT Token")
         verbose_name_plural = _(u"JWT Tokens")
