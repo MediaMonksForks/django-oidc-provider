@@ -123,7 +123,7 @@ def create_token(user, client, scope, id_token_dic=None, request=None):
 
     settings.get('OIDC_TOKEN_CREATED_HOOK', import_str=True)(token=token, request=request)
 
-    token.access_token = token.generate_access_token()
+    token.access_token = token.generate_access_token(request=request)
 
     return token
 

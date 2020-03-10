@@ -302,7 +302,7 @@ class JWTToken(BaseToken):
         verbose_name = _(u"JWT Token")
         verbose_name_plural = _(u"JWT Tokens")
 
-    def generate_access_token(self):
+    def generate_access_token(self, request=None):
         from oidc_provider.lib.utils.token import encode_id_token
         from oidc_provider.lib.utils.common import run_processing_hook
         from django.utils.dateformat import format
@@ -310,7 +310,7 @@ class JWTToken(BaseToken):
         claims = {
             # issueer
             # This requires settings.SITE_URL
-            "iss": get_issuer(),
+            "iss": get_issuer(request=request),
             # clientid
             "aud": self.client.client_id,
             # JWT ID
