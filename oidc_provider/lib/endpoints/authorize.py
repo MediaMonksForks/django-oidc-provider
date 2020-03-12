@@ -130,7 +130,7 @@ class AuthorizeEndpoint(object):
         uri = urlsplit(self.params['redirect_uri'])
         query_params = parse_qs(uri.query)
         query_fragment = {}
-        # import ipdb; ipdb.set_trace()
+
         try:
             if self.grant_type in ['authorization_code', 'hybrid']:
                 code = create_code(
@@ -190,7 +190,7 @@ class AuthorizeEndpoint(object):
 
                 query_fragment['token_type'] = 'bearer'
 
-                query_fragment['expires_in'] = settings.get('OIDC_TOKEN_EXPIRE')
+                query_fragment['expires_in'] = self.client.token_expire or settings.get('OIDC_TOKEN_EXPIRE')
 
                 query_fragment['state'] = self.params['state'] if self.params['state'] else ''
 

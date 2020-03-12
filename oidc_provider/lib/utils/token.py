@@ -30,7 +30,7 @@ def create_id_token(token, user, aud, nonce='', at_hash='', request=None, scope=
         scope = []
     sub = settings.get('OIDC_IDTOKEN_SUB_GENERATOR', import_str=True)(user=user)
 
-    expires_in = settings.get('OIDC_IDTOKEN_EXPIRE')
+    expires_in = token.client.idtoken_expire or settings.get('OIDC_IDTOKEN_EXPIRE')
 
     # Convert datetimes into timestamps.
     now = int(time.time())
@@ -118,7 +118,7 @@ def create_token(user, client, scope, id_token_dic=None, request=None):
 
     token.refresh_token = uuid.uuid4().hex
     token.expires_at = timezone.now() + timedelta(
-        seconds=settings.get('OIDC_TOKEN_EXPIRE'))
+        seconds=client.token_expire or settings.get('OIDC_TOKEN_EXPIRE'))
     token.scope = scope
 
     settings.get('OIDC_TOKEN_CREATED_HOOK', import_str=True)(token=token, request=request)
@@ -145,7 +145,7 @@ def create_code(user, client, scope, nonce, is_authentication,
         code.code_challenge_method = code_challenge_method
 
     code.expires_at = timezone.now() + timedelta(
-        seconds=settings.get('OIDC_CODE_EXPIRE'))
+        seconds=client.code_expire or settings.get('OIDC_CODE_EXPIRE'))
     code.scope = scope
     code.nonce = nonce
     code.is_authentication = is_authentication

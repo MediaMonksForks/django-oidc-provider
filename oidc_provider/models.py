@@ -137,6 +137,11 @@ class Client(models.Model):
         help_text=_("Specifies the authorized scope values for the client app."),
     )
 
+    # 5 minutes for access tokens
+    token_expire = models.IntegerField(default=60 * 60)
+    idtoken_expire = models.IntegerField(default=10 * 60)
+    code_expire = models.IntegerField(default=60 * 10)
+
     class Meta:
         verbose_name = _(u"Client")
         verbose_name_plural = _(u"Clients")
@@ -297,7 +302,7 @@ class JWTToken(BaseToken):
     )
 
     id_token_str = models.TextField(max_length=65000, verbose_name=_(u"ID Token Str"))
-    
+
     class Meta:
         verbose_name = _(u"JWT Token")
         verbose_name_plural = _(u"JWT Tokens")
