@@ -54,7 +54,7 @@ from oidc_provider.models import (
     ResponseType)
 from oidc_provider import settings
 from oidc_provider import signals
-
+from django.conf import settings as django_settings
 
 logger = logging.getLogger(__name__)
 
@@ -266,16 +266,16 @@ class ProviderInfoView(View):
         dic['version'] = '0.0.1'
         dic['issuer'] = get_issuer(site_url=site_url, request=request)
 
-        dic['authorization_endpoint'] = site_url + reverse('oidc_provider:authorize')
-        dic['token_endpoint'] = site_url + reverse('oidc_provider:token')
-        dic['userinfo_endpoint'] = site_url + reverse('oidc_provider:userinfo')
-        dic['end_session_endpoint'] = site_url + reverse('oidc_provider:end-session')
-        dic['introspection_endpoint'] = site_url + reverse('oidc_provider:token-introspection')
+        dic['authorization_endpoint'] = site_url + django_settings.OIDC_URL_PREFIX + reverse('oidc_provider:authorize')
+        dic['token_endpoint'] = site_url + django_settings.OIDC_URL_PREFIX + reverse('oidc_provider:token')
+        dic['userinfo_endpoint'] = site_url + django_settings.OIDC_URL_PREFIX + reverse('oidc_provider:userinfo')
+        dic['end_session_endpoint'] = site_url + django_settings.OIDC_URL_PREFIX + reverse('oidc_provider:end-session')
+        dic['introspection_endpoint'] = site_url + django_settings.OIDC_URL_PREFIX + reverse('oidc_provider:token-introspection')
 
         types_supported = [response_type.value for response_type in ResponseType.objects.all()]
         dic['response_types_supported'] = types_supported
 
-        dic['jwks_uri'] = site_url + reverse('oidc_provider:jwks')
+        dic['jwks_uri'] = site_url + django_settings.OIDC_URL_PREFIX + reverse('oidc_provider:jwks')
 
         dic['id_token_signing_alg_values_supported'] = ['HS256', 'RS256']
 
@@ -286,7 +286,7 @@ class ProviderInfoView(View):
                                                         'client_secret_basic']
 
         if settings.get('OIDC_SESSION_MANAGEMENT_ENABLE'):
-            dic['check_session_iframe'] = site_url + reverse('oidc_provider:check-session-iframe')
+            dic['check_session_iframe'] = site_url + django_settings.OIDC_URL_PREFIX + reverse('oidc_provider:check-session-iframe')
 
         response = JsonResponse(dic)
         # response['Access-Control-Allow-Origin'] = '*'
