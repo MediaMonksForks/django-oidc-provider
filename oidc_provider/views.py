@@ -55,6 +55,7 @@ from oidc_provider.models import (
 from oidc_provider import settings
 from oidc_provider import signals
 from django.conf import settings as django_settings
+from django.views.decorators.clickjacking import xframe_options_exempt
 
 logger = logging.getLogger(__name__)
 
@@ -202,6 +203,9 @@ class AuthorizeView(View):
 
             return redirect(uri)
 
+    @method_decorator(xframe_options_exempt)
+    def dispatch(self, *args, **kwargs):
+        return super().dispatch(*args, **kwargs)
 
 class TokenView(View):
     def post(self, request, *args, **kwargs):
