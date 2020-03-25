@@ -103,11 +103,11 @@ class TokenEndpoint(object):
                 inspect.getcallargs(authenticate, *auth_args)
             except TypeError:
                 auth_args = ()
-
+            # TODO: change for domain
             user = authenticate(
                 *auth_args,
                 username=self.params['username'],
-                password=self.params['password']
+                password=self.params['password'],
             )
 
             if not user:
